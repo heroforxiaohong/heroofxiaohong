@@ -40,6 +40,15 @@
         <!-- 相关表的配置 -->
         <table tableName="account_login" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false"/>
+        <!-- 相关表的配置 -->
+        <table tableName="account_permission" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+        <!-- 相关表的配置 -->
+        <table tableName="account_role" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false"/>
+        <!-- 相关表的配置 -->
+        <table tableName="account_user" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false"/>
 
     </context>
 

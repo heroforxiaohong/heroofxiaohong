@@ -4,6 +4,8 @@ package com.sts.blue.app_c.fun_bearer.moudles.account;
 
 import com.sts.blue.app_c.base.Base_Control;
 import com.sts.blue.app_c.client.handler.NettySendUtils;
+import com.sts.blue.base_module.entity.Interaction.AppMRequestParam;
+import com.sts.blue.base_module.static_value.M_ServiceType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,23 +24,12 @@ public class AccountControlEntrance extends Base_Control {
 //    public void doLogin(HttpServletRequest request, final HttpServletResponse response, @RequestBody Entity_req_login param)
     public void doLogin(HttpServletRequest request, final HttpServletResponse response)
     {
-//        if (callEntryService == null){
-//            callEntryService = new CallEntryServiceImpl();
-//        }
-//
-//        if (null == param){
-//
-//        }
 
-//        new Thread()
+        AppMRequestParam param = new AppMRequestParam();
+        param.setPortType(M_ServiceType.FUN_LOGIN);
+        param.setParame(null);
 
-//        NettyClient client = new NettyClient();
-//        try {
-//            client.run();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        NettySendUtils.send();
+        NettySendUtils.send(param);
 
         try {
             response.setContentType("application/json;charset=UTF-8");
@@ -47,26 +38,6 @@ public class AccountControlEntrance extends Base_Control {
             e.printStackTrace();
         }
 
-//        AppMRequestParame requestParame = new AppMRequestParame();
-//        requestParame.setPortType(M_ServiceType.FUN_LOGIN);
-//        requestParame.setParame("一个参数");
-
-//        callEntryService.callFunction(requestParame, new CallFunctionListener() {
-//            @Override
-//            public void onReturn(AppMResponseValue value) {
-//                //返回数据给前端 或 给予前端提示信息
-//                RespMessage respMessage = new RespMessage();
-//                if (true){
-//                    respMessage.setProcessResult(true);
-//                }
-//                writeResult(response, respMessage);
-//            }
-//
-//            @Override
-//            public void onException(Exception e) {
-//                //异常提示或操作
-//            }
-//        });
 
     }
 

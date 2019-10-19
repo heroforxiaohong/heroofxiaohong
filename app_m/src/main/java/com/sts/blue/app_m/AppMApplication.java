@@ -25,8 +25,8 @@ import java.util.Set;
 
 @SpringBootApplication
 @MapperScan({"com.sts.blue.app_m.mybatis_generator.dao", "com.sts.blue.app_m.customer_mapper"})
-@ComponentScan(value = "com.sts.blue.app_m.server")
-@PropertySource(value= "classpath:/application.properties")
+//@ComponentScan(value = "com.sts.blue.app_m.server")
+//@PropertySource(value= "classpath:/application.properties")
 public class AppMApplication{
 
     @Configuration

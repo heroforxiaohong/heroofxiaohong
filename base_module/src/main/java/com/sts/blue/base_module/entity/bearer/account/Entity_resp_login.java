@@ -22,6 +22,7 @@ public class Entity_resp_login {
 
     private int rolePermissionID;
 
+
     public int getUserID() {
         return userID;
     }

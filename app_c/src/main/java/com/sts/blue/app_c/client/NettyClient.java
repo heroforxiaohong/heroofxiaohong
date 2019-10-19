@@ -2,7 +2,9 @@ package com.sts.blue.app_c.client;
 
 import com.sts.blue.app_c.client.handler.IdleClientHandler;
 import com.sts.blue.app_c.client.handler.LogicClientHandler;
-import com.sts.blue.base_module.base.common.protobuf.Message;
+import com.sts.blue.base_module.base.codec.MsgDecoder;
+import com.sts.blue.base_module.base.codec.MsgEncoder;
+import com.sts.blue.base_module.base.codec.PacketDecoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -60,15 +62,20 @@ public class NettyClient {
 					public void initChannel(SocketChannel ch) throws Exception {
 						ChannelPipeline p = ch.pipeline();
 
+//						ch.pipeline().addLast(new PacketDecoder());
+
+						ch.pipeline().addLast(new MsgDecoder());
+						ch.pipeline().addLast(MsgEncoder.INSTANCE);
+
 						p.addLast("idleStateHandler", new IdleStateHandler(READER_IDLE_TIME_SECONDS
 								, WRITER_IDLE_TIME_SECONDS, ALL_IDLE_TIME_SECONDS, TimeUnit.SECONDS));
 						p.addLast("idleTimeoutHandler", new IdleClientHandler(NettyClient.this));
 
-						p.addLast(new ProtobufVarint32FrameDecoder());
-						p.addLast(new ProtobufDecoder(Message.MessageBase.getDefaultInstance()));
-
-						p.addLast(new ProtobufVarint32LengthFieldPrepender());
-						p.addLast(new ProtobufEncoder());
+//						p.addLast(new ProtobufVarint32FrameDecoder());
+//						p.addLast(new ProtobufDecoder(Message.MessageBase.getDefaultInstance()));
+//
+//						p.addLast(new ProtobufVarint32LengthFieldPrepender());
+//						p.addLast(new ProtobufEncoder());
 
 						p.addLast("clientHandler", new LogicClientHandler());
 					}

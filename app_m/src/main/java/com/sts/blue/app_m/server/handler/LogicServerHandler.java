@@ -1,12 +1,26 @@
 package com.sts.blue.app_m.server.handler;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.google.protobuf.ByteString;
+import com.sts.blue.app_m.gate.CallEntryService;
+import com.sts.blue.app_m.gate.CallEntryServiceImpl;
 import com.sts.blue.app_m.server.ChannelRepository;
+import com.sts.blue.base_module.base.msg.Message;
+import com.sts.blue.base_module.entity.Interaction.AppMRequestParam;
+import com.sts.blue.base_module.entity.Interaction.AppMResponseValue;
+import com.sts.blue.base_module.listener.CallFunctionListener;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
+import io.netty.util.ReferenceCountUtil;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,64 +42,42 @@ public class LogicServerHandler extends ChannelInboundHandlerAdapter{
 	@Qualifier("channelRepository")
 	ChannelRepository channelRepository;
 
+//	@Autowired
+	CallEntryService callEntryService = null;
+
+
 	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+	public void channelRead(ChannelHandlerContext ctx, Object msg){
 		log.info(this.getClass().getSimpleName()+"   msg:"+msg);
 
-		ByteBuf buf=(ByteBuf) msg;
-		byte[] req=new byte[buf.readableBytes()];
-		buf.readBytes(req);
-		String body=new String(req,"UTF-8");
-		log.info("服务器端接收的消息："+body);
-		try{
-//			//这个analysis是处理部分 返回String类型
-//			String dispose = analysis(body);
-//			log.info("服务器返回的消息："+dispose);
-//			ByteBuf resp= Unpooled.copiedBuffer(dispose.getBytes());
-//			//返回给客户端
-//			ctx.write(resp);
-		}catch (Exception e){
-//			Errorr errorr = new Errorr();
-//			errorr.setType("500");
-//			try{
-//				//截取异常
-//				errorr.setResult(e.toString().split(":")[1]);
-//			}catch (Exception e2){
-//				errorr.setResult("请联系管理员处理！");
-//			}
-//			String dispose = JSON.toJSONString(errorr);
-//			log.info("服务器返回的消息："+dispose);
-//			ByteBuf resp= Unpooled.copiedBuffer(dispose.getBytes());
-//			ctx.write(resp);
-		}
+		Message paramMsg = (Message) msg;
+		log.info(this.getClass().getSimpleName()+"   param:"+paramMsg.getMsg());
 
-//		Message.MessageBase msgBase = (Message.MessageBase)msg;
-//
-//		log.info(msgBase.getData());
-//
-//		ChannelFuture cf = ctx.writeAndFlush(
-//				MessageBase.newBuilder()
-//				.setClientId(msgBase.getClientId())
-//				.setCmd(CommandType.UPLOAD_DATA_BACK)
-//				.setData("This is upload data back msg")
-//				.build()
-//				);
-//		/* 上一条消息发送成功后，立马推送一条消息 */
-//		cf.addListener(new GenericFutureListener<Future<? super Void>>() {
-//			@Override
-//			public void operationComplete(Future<? super Void> future) throws Exception {
-//				if (future.isSuccess()){
-//					ctx.writeAndFlush(
-//							MessageBase.newBuilder()
-//							.setClientId(msgBase.getClientId())
-//							.setCmd(CommandType.PUSH_DATA)
-//							.setData("This is a push msg")
-//							.build()
-//							);
-//				}
-//			}
-//		});
-//		ReferenceCountUtil.release(msg);
+//		ctx.channel().writeAndFlush(new Message("Oh~YE~~~"));
+
+		AppMRequestParam param = JSON.parseObject(paramMsg.getMsg(), AppMRequestParam.class);
+
+		log.info("服务器端接收的param："+param.getPortType()+"   " +param.getParame());
+
+//		ctx.channel().writeAndFlush(new Message("回调111"));
+
+		if (callEntryService ==null){
+			callEntryService = new CallEntryServiceImpl();
+		}
+		callEntryService.callFunction(param, new CallFunctionListener() {
+			@Override
+			public void onReturn(AppMResponseValue value) {
+//				ctx.write(new Message("回调"));
+				String req = JSON.toJSONString(value, SerializerFeature.WriteMapNullValue);
+				ctx.channel().writeAndFlush(new Message(req));
+			}
+
+			@Override
+			public void onException(Exception e) {
+
+			}
+		});
+
 	}
 
 	@Override

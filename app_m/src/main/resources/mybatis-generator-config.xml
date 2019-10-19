@@ -32,7 +32,7 @@
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
-        <!-- Mapper 接口文件的位置 -->
+        <!-- Mapper 接口文件的位置   type="XMLMAPPER"-->
         <javaClientGenerator targetPackage="com.sts.blue.app_m.mybatis_generator.dao" targetProject="./src/main/java" type="XMLMAPPER">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>

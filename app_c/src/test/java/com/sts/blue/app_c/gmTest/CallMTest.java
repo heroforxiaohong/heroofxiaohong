@@ -5,7 +5,7 @@ import com.sts.blue.app_m.AppMApplication;
 import com.sts.blue.app_m.customer_mapper.C_AccountLoginMapper;
 import com.sts.blue.app_m.gate.CallEntryService;
 import com.sts.blue.app_m.gate.CallEntryServiceImpl;
-import com.sts.blue.base_module.entity.Interaction.AppMRequestParame;
+import com.sts.blue.base_module.entity.Interaction.AppMRequestParam;
 import com.sts.blue.base_module.entity.Interaction.AppMResponseValue;
 import com.sts.blue.base_module.listener.CallFunctionListener;
 import com.sts.blue.base_module.static_value.M_ServiceType;
@@ -24,7 +24,7 @@ public class CallMTest {
             callEntryService = new CallEntryServiceImpl();
         }
 
-        AppMRequestParame requestParame = new AppMRequestParame();
+        AppMRequestParam requestParame = new AppMRequestParam();
         requestParame.setPortType(M_ServiceType.FUN_LOGIN);
         requestParame.setParame("一个参数");
 

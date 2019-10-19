@@ -5,7 +5,13 @@ package com.sts.blue.base_module.entity.Interaction;
  * */
 public class AppMResponseValue {
 
+    private String data;
 
+    public String getData() {
+        return data;
+    }
 
-
+    public void setData(String data) {
+        this.data = data;
+    }
 }

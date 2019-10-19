@@ -1,8 +1,7 @@
 package com.sts.blue.app_c.client.handler;
 
 import com.sts.blue.app_c.client.NettyClient;
-import com.sts.blue.base_module.base.common.protobuf.Command;
-import com.sts.blue.base_module.base.common.protobuf.Message;
+import com.sts.blue.base_module.base.msg.Message;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.EventLoop;
@@ -51,13 +50,14 @@ public class IdleClientHandler extends SimpleChannelInboundHandler<Message> {
 	 * @param context
 	 */
 	protected void sendPingMsg(ChannelHandlerContext context) {
-		context.writeAndFlush(
-				Message.MessageBase.newBuilder()
-				.setClientId(CLIENTID)
-				.setCmd(Command.CommandType.PING)
-				.setData("This is a ping msg")
-				.build()
-				);
+		context.writeAndFlush(new Message("This is a ping msg"));
+//		context.writeAndFlush(
+//				Message.MessageBase.newBuilder()
+//				.setClientId(CLIENTID)
+//				.setCmd(Command.CommandType.PING)
+//				.setData("This is a ping msg")
+//				.build()
+//				);
 		heartbeatCount++;
 		log.info("Client sent ping msg to " + context.channel().remoteAddress() + ", count: " + heartbeatCount);
 	}
@@ -74,6 +74,7 @@ public class IdleClientHandler extends SimpleChannelInboundHandler<Message> {
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-
+//		log.info("131 "+msg.getMsg());
+		ctx.fireChannelRead(msg);
 	}
 }

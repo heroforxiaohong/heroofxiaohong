@@ -2,7 +2,8 @@ package com.sts.blue.app_m.gate;
 
 import com.sts.blue.app_m.fun_bearer.account.AccountService;
 import com.sts.blue.app_m.fun_bearer.account.AccountServiceImpl;
-import com.sts.blue.base_module.entity.Interaction.AppMRequestParame;
+import com.sts.blue.base_module.entity.Interaction.AppMRequestParam;
+import com.sts.blue.base_module.entity.bearer.account.Entity_req_login;
 import com.sts.blue.base_module.listener.CallFunctionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class CallEntryServiceImpl implements CallEntryService{
      * @param parame 传入参数
      * @param listener 事件处理后的回调实体
      * */
-    public void callFunction(AppMRequestParame parame, CallFunctionListener listener){
+    public void callFunction(AppMRequestParam parame, CallFunctionListener listener){
         if (parame.getPortType()!=null){
             doFunction(parame, listener);
         }else {
@@ -37,13 +38,13 @@ public class CallEntryServiceImpl implements CallEntryService{
         }
     }
 
-    private void doFunction(AppMRequestParame parame, CallFunctionListener listener){
+    private void doFunction(AppMRequestParam parame, CallFunctionListener listener){
         switch (parame.getPortType()){
             case FUN_LOGIN:
                 if (accountService == null){
                     accountService = new AccountServiceImpl();
                 }
-                accountService.doLogin(parame.getParame(), listener);
+                accountService.doLogin((Entity_req_login) parame.getParame(), listener);
                 break;
         }
     }

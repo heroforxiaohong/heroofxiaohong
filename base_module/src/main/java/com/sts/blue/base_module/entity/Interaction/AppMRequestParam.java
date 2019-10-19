@@ -5,11 +5,11 @@ import com.sts.blue.base_module.static_value.M_ServiceType;
 /**
  * c 调用 m 方法时，传入的参数值类型
  * */
-public class AppMRequestParame {
+public class AppMRequestParam {
 
     private M_ServiceType portType;
 
-    private String parame;
+    private Object param;
 
     public M_ServiceType getPortType() {
         return portType;
@@ -19,11 +19,11 @@ public class AppMRequestParame {
         this.portType = portType;
     }
 
-    public String getParame() {
-        return parame;
+    public Object getParame() {
+        return param;
     }
 
-    public void setParame(String parame) {
-        this.parame = parame;
+    public void setParame(Object param) {
+        this.param = param;
     }
 }

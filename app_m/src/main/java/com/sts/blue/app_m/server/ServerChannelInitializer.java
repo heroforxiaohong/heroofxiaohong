@@ -1,6 +1,9 @@
 package com.sts.blue.app_m.server;
 
 import com.sts.blue.app_m.server.handler.IdleServerHandler;
+import com.sts.blue.base_module.base.codec.MsgDecoder;
+import com.sts.blue.base_module.base.codec.MsgEncoder;
+import com.sts.blue.base_module.base.codec.PacketDecoder;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -22,9 +25,9 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 	private final static int WRITER_IDLE_TIME_SECONDS = 20;//写操作空闲20秒
 	private final static int ALL_IDLE_TIME_SECONDS = 40;//读写全部空闲40秒
 	
-    @Autowired
-    @Qualifier("authServerHandler")
-    private ChannelInboundHandlerAdapter authServerHandler;
+//    @Autowired
+//    @Qualifier("authServerHandler")
+//    private ChannelInboundHandlerAdapter authServerHandler;
     
     @Autowired
     @Qualifier("logicServerHandler")
@@ -34,6 +37,12 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
     protected void initChannel(SocketChannel socketChannel) throws Exception {
     	ChannelPipeline p = socketChannel.pipeline();
         log.info(this.getClass().getSimpleName()+"   initChannel()");
+
+//        p.addLast(new PacketDecoder());
+
+        p.addLast(new MsgDecoder());
+        p.addLast(MsgEncoder.INSTANCE);
+
     	p.addLast("idleStateHandler", new IdleStateHandler(READER_IDLE_TIME_SECONDS
     			, WRITER_IDLE_TIME_SECONDS, ALL_IDLE_TIME_SECONDS, TimeUnit.SECONDS));
 	    p.addLast("idleTimeoutHandler", new IdleServerHandler());

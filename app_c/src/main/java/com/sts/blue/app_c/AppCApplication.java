@@ -10,7 +10,7 @@ public class AppCApplication{
 
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(AppCApplication.class, args);
+
 
 
 
@@ -26,8 +26,15 @@ public class AppCApplication{
             }
         }).start();
 
-        new NioWebSocketServer().init();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new NioWebSocketServer().init();
+            }
+        }).start();
 
+
+        SpringApplication.run(AppCApplication.class, args);
 
     }
 

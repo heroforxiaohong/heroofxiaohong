@@ -20,6 +20,7 @@ import io.netty.channel.ChannelId;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -30,15 +31,13 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = "/account", method = RequestMethod.POST)
 public class AccountControlEntrance extends Base_Control {
 
-//    private CallEntryService callEntryService = null;
-
     /**
      * 登录功能的http 入口
      * */
     @PostMapping(value = "/login")
-//    public void doLogin(HttpServletRequest request, final HttpServletResponse response, @RequestBody Entity_req_login param)
-    public void doLogin(HttpServletRequest request, final HttpServletResponse response)
+    public void doLogin(HttpServletRequest request, final HttpServletResponse response, @RequestBody Entity_req_login reqLogin)
     {
+
         SimpleCallBack callBack = (SimpleCallBack<AppMResponseValue>) value -> {
             RespMessage result = new RespMessage(JSON.parseObject(value.getData(), Entity_resp_login.class), true, null);
 
@@ -46,7 +45,7 @@ public class AccountControlEntrance extends Base_Control {
         };
 
         //调用实际处理方法
-        doLogin(new Entity_req_login(), callBack);
+        doLogin(reqLogin, callBack);
     }
 
     /**
@@ -74,8 +73,8 @@ public class AccountControlEntrance extends Base_Control {
      * 登录功能的实际控制方法
      * */
     private void doLogin(Entity_req_login login, SimpleCallBack<AppMResponseValue> callBack){
-        login.setLoginName("13265656565");
-        login.setLoginPasswd("123456");
+//        login.setLoginName("13265656565"); //测试
+//        login.setLoginPasswd("123456");
 
         AppMRequestParam param = new AppMRequestParam();
         param.setPortType(M_ServiceType.FUN_LOGIN);

@@ -1,6 +1,8 @@
 package com.sts.blue.base_module.entity.bearer.account;
 
-public class Entity_resp_login {
+import com.sts.blue.base_module.entity.responseEntity.Resp_result;
+
+public class Entity_resp_login extends Resp_result {
 
     private int userID;
 
@@ -21,6 +23,8 @@ public class Entity_resp_login {
     private String roleName;
 
     private int rolePermissionID;
+
+    private String permissionMainMenu;
 
 
     public int getUserID() {
@@ -101,5 +105,13 @@ public class Entity_resp_login {
 
     public void setRolePermissionID(int rolePermissionID) {
         this.rolePermissionID = rolePermissionID;
+    }
+
+    public String getPermissionMainMenu() {
+        return permissionMainMenu;
+    }
+
+    public void setPermissionMainMenu(String permissionMainMenu) {
+        this.permissionMainMenu = permissionMainMenu;
     }
 }

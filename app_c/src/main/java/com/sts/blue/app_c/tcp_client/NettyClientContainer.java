@@ -1,8 +1,6 @@
-package com.sts.blue.app_c.client;
+package com.sts.blue.app_c.tcp_client;
 
 import io.netty.channel.Channel;
-
-import java.util.*;
 
 public class NettyClientContainer {
 

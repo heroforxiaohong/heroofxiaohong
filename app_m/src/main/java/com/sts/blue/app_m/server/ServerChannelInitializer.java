@@ -4,6 +4,8 @@ import com.sts.blue.app_m.server.handler.IdleServerHandler;
 import com.sts.blue.base_module.base.codec.MsgDecoder;
 import com.sts.blue.base_module.base.codec.MsgEncoder;
 import com.sts.blue.base_module.base.codec.PacketDecoder;
+import com.sts.blue.base_module.base.msg_v2.MessageDecode;
+import com.sts.blue.base_module.base.msg_v2.MessageEncoder;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -40,8 +42,11 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 
 //        p.addLast(new PacketDecoder());
 
-        p.addLast(new MsgDecoder());
-        p.addLast(MsgEncoder.INSTANCE);
+//        p.addLast(new MsgDecoder());
+//        p.addLast(MsgEncoder.INSTANCE);
+
+        p.addLast("decoder",new MessageDecode());
+        p.addLast("encoder",new MessageEncoder());
 
     	p.addLast("idleStateHandler", new IdleStateHandler(READER_IDLE_TIME_SECONDS
     			, WRITER_IDLE_TIME_SECONDS, ALL_IDLE_TIME_SECONDS, TimeUnit.SECONDS));

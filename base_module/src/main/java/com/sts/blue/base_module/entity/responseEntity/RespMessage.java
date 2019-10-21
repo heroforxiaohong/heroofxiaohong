@@ -1,4 +1,4 @@
-package com.sts.blue.app_c.fun_bearer.entity.responseEntity;
+package com.sts.blue.base_module.entity.responseEntity;
 
 
 public class RespMessage <T extends Resp_result>{
@@ -9,15 +9,23 @@ public class RespMessage <T extends Resp_result>{
     private boolean valid;
 
     public RespMessage() {
-        status = new Resp_status();
-        valid = false;
+        init();
     }
 
-    public RespMessage(boolean isSuccess, Resp_processWrongType type){
+    public RespMessage(T resp_result, boolean isSuccess, Resp_processWrongType type){
+        init();
+
+        setResult(resp_result);
+
         setProcessResult(isSuccess);
         if (!isSuccess && null!=type){
             setProcessWrong(type);
         }
+    }
+
+    private void init(){
+        status = new Resp_status();
+        valid = false;
     }
 
     public void setResult(T result) {

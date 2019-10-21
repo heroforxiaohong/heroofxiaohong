@@ -1,8 +1,11 @@
-package com.sts.blue.app_c.client.handler;
+package com.sts.blue.app_c.tcp_client.handler;
 
 
-import com.sts.blue.app_c.client.NettyClientContainer;
-import com.sts.blue.base_module.base.msg.Message;
+import com.alibaba.fastjson.JSON;
+import com.sts.blue.app_c.tcp_client.NettyActionContainer;
+import com.sts.blue.app_c.tcp_client.NettyClientContainer;
+import com.sts.blue.base_module.base.msg_v2.Message;
+import com.sts.blue.base_module.entity.Interaction.AppMResponseValue;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.apache.log4j.Logger;
@@ -38,7 +41,17 @@ public class LogicClientHandler extends SimpleChannelInboundHandler<Message>{
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
 
-		log.info(msg.getMsg());
+		log.info(new String(msg.getContent()));
+
+		switch (msg.getHead().getMessageType()){
+			case REQ_DATA:
+
+				AppMResponseValue value = JSON.parseObject(msg.getContent(), AppMResponseValue.class);
+
+				NettyActionContainer.getInstance().consumeAction(msg.getHead().getActionKey(), value);
+
+				break;
+		}
 
 //		if(msg.getCmd().equals(Command.CommandType.AUTH_BACK)){
 //			log.debug("验证成功");

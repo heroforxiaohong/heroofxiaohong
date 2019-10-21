@@ -1,19 +1,14 @@
-package com.sts.blue.app_c.client;
+package com.sts.blue.app_c.tcp_client;
 
-import com.sts.blue.app_c.client.handler.IdleClientHandler;
-import com.sts.blue.app_c.client.handler.LogicClientHandler;
-import com.sts.blue.base_module.base.codec.MsgDecoder;
-import com.sts.blue.base_module.base.codec.MsgEncoder;
-import com.sts.blue.base_module.base.codec.PacketDecoder;
+import com.sts.blue.app_c.tcp_client.handler.IdleClientHandler;
+import com.sts.blue.app_c.tcp_client.handler.LogicClientHandler;
+import com.sts.blue.base_module.base.msg_v2.MessageDecode;
+import com.sts.blue.base_module.base.msg_v2.MessageEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.log4j.Logger;
 
@@ -49,7 +44,7 @@ public class NettyClient {
 	}
 
 	/**
-	 * netty client 连接，连接失败10秒后重试连接
+	 * netty tcp_client 连接，连接失败10秒后重试连接
 	 */
 	public Bootstrap doConnect(Bootstrap bootstrap, EventLoopGroup eventLoopGroup) {
 		try {
@@ -64,8 +59,11 @@ public class NettyClient {
 
 //						ch.pipeline().addLast(new PacketDecoder());
 
-						ch.pipeline().addLast(new MsgDecoder());
-						ch.pipeline().addLast(MsgEncoder.INSTANCE);
+//						ch.pipeline().addLast(new MsgDecoder());
+//						ch.pipeline().addLast(MsgEncoder.INSTANCE);
+
+						p.addLast("decoder",new MessageDecode());
+						p.addLast("encoder",new MessageEncoder());
 
 						p.addLast("idleStateHandler", new IdleStateHandler(READER_IDLE_TIME_SECONDS
 								, WRITER_IDLE_TIME_SECONDS, ALL_IDLE_TIME_SECONDS, TimeUnit.SECONDS));

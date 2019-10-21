@@ -1,4 +1,4 @@
-package com.sts.blue.app_c.fun_bearer.entity.responseEntity;
+package com.sts.blue.base_module.entity.responseEntity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 

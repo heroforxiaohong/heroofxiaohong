@@ -1,7 +1,8 @@
-package com.sts.blue.app_c.client.handler;
+package com.sts.blue.app_c.tcp_client.handler;
 
-import com.sts.blue.app_c.client.NettyClient;
-import com.sts.blue.base_module.base.msg.Message;
+import com.sts.blue.app_c.tcp_client.NettyClient;
+import com.sts.blue.base_module.base.msg_v2.Message;
+import com.sts.blue.base_module.base.msg_v2.MessageHead;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.EventLoop;
@@ -10,6 +11,7 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import org.apache.log4j.Logger;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class IdleClientHandler extends SimpleChannelInboundHandler<Message> {
@@ -17,7 +19,6 @@ public class IdleClientHandler extends SimpleChannelInboundHandler<Message> {
 
 	private NettyClient nettyClient;
 	private int heartbeatCount = 0;
-	private final static String CLIENTID = "123456789";
 
 	/**
 	 * @param nettyClient
@@ -50,16 +51,18 @@ public class IdleClientHandler extends SimpleChannelInboundHandler<Message> {
 	 * @param context
 	 */
 	protected void sendPingMsg(ChannelHandlerContext context) {
-		context.writeAndFlush(new Message("This is a ping msg"));
-//		context.writeAndFlush(
-//				Message.MessageBase.newBuilder()
-//				.setClientId(CLIENTID)
-//				.setCmd(Command.CommandType.PING)
-//				.setData("This is a ping msg")
-//				.build()
-//				);
+
+		byte[] msg = "ping".getBytes();
+
+		MessageHead messageHead = new MessageHead();
+		messageHead.setCreateDate(new Date());
+		messageHead.setLength(msg.length);
+		Message msgH = new Message(messageHead, msg);
+		msgH.getHead().setToken(msgH.buildToken());
+		msgH.getHead().setActionKey("670b14728ad9902aecba32e22fa4f6bd");
+		context.writeAndFlush(msgH);
 		heartbeatCount++;
-		log.info("Client sent ping msg to " + context.channel().remoteAddress() + ", count: " + heartbeatCount);
+//		log.info("Client sent ping msg to " + context.channel().remoteAddress() + ", count: " + heartbeatCount);
 	}
 
 	/**
@@ -73,8 +76,7 @@ public class IdleClientHandler extends SimpleChannelInboundHandler<Message> {
 	}
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-//		log.info("131 "+msg.getMsg());
+	protected void channelRead0(ChannelHandlerContext ctx, Message msg){
 		ctx.fireChannelRead(msg);
 	}
 }

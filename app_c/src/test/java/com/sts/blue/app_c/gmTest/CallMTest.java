@@ -9,6 +9,7 @@ import com.sts.blue.base_module.entity.Interaction.AppMRequestParam;
 import com.sts.blue.base_module.entity.Interaction.AppMResponseValue;
 import com.sts.blue.base_module.listener.CallFunctionListener;
 import com.sts.blue.base_module.static_value.M_ServiceType;
+import com.sts.blue.base_module.tools.StrTool;
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;
 
@@ -26,7 +27,7 @@ public class CallMTest {
 
         AppMRequestParam requestParame = new AppMRequestParam();
         requestParame.setPortType(M_ServiceType.FUN_LOGIN);
-        requestParame.setParame("一个参数");
+        requestParame.setParam("一个参数");
 
         callEntryService.callFunction(requestParame, new CallFunctionListener() {
             @Override
@@ -41,4 +42,9 @@ public class CallMTest {
         });
     }
 
+    @Test
+    public void testMD5() {
+        String md5 = StrTool.getMD5("123456");
+        int a =1;
+    }
 }

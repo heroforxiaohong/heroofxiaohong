@@ -1,5 +1,6 @@
 package com.sts.blue.base_module.entity.Interaction;
 
+import com.alibaba.fastjson.JSON;
 import com.sts.blue.base_module.static_value.M_ServiceType;
 
 /**
@@ -9,7 +10,7 @@ public class AppMRequestParam {
 
     private M_ServiceType portType;
 
-    private Object param;
+    private String param;
 
     public M_ServiceType getPortType() {
         return portType;
@@ -19,11 +20,15 @@ public class AppMRequestParam {
         this.portType = portType;
     }
 
-    public Object getParame() {
+    public String getParam() {
         return param;
     }
 
-    public void setParame(Object param) {
+    public void setParam(String param) {
         this.param = param;
+    }
+
+    public void setParam(Object param) {
+        this.param = JSON.toJSONString(param);
     }
 }

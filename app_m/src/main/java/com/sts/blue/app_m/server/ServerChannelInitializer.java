@@ -1,9 +1,6 @@
 package com.sts.blue.app_m.server;
 
 import com.sts.blue.app_m.server.handler.IdleServerHandler;
-import com.sts.blue.base_module.base.codec.MsgDecoder;
-import com.sts.blue.base_module.base.codec.MsgEncoder;
-import com.sts.blue.base_module.base.codec.PacketDecoder;
 import com.sts.blue.base_module.base.msg_v2.MessageDecode;
 import com.sts.blue.base_module.base.msg_v2.MessageEncoder;
 import io.netty.channel.ChannelInboundHandlerAdapter;
